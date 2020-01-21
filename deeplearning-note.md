@@ -139,7 +139,6 @@
     epochs = 20,
     verbose=1,
     callbacks=[callbacks])
-<<<<<<< HEAD
     ```
 
 - 使用卷积层与MaxPooling
