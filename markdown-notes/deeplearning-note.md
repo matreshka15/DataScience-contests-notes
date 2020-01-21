@@ -155,8 +155,7 @@
         tf.keras.layers.Dense(512,activation='relu'),
         tf.keras.layers.Dense(1,activation='sigmoid')])
       ```
-=======
-  ```
+
 
 - 使用卷积层与MaxPooling
 
@@ -172,7 +171,6 @@
       tf.keras.layers.Dense(512,activation='relu'),
       tf.keras.layers.Dense(1,activation='sigmoid')])
      ```
->>>>>>> 1c51ad97c5f5fdd9bd285d6a60d12fedefb1f373
 
 - 使用ImageDataGenerator读取image Data
   ```python
@@ -221,7 +219,6 @@
     last_layer = pre_trained_model.get_layer('mixed7')
     print('last layer output shape: ', last_layer.output_shape)
     last_output = last_layer.output
-
     # Flatten the output layer to 1 dimension
     x = layers.Flatten()(last_output)
     # Add a fully connected layer with 1,024 hidden units and ReLU activation

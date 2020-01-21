@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html data-markdown-preview-plus-context="html-export">
+  <head>
+    <meta charset="utf-8" />
+    <title>deeplearning-note.md</title><script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    extensions: ["[a11y]/accessibility-menu.js"],
+    'HTML-CSS': {
+      availableFonts: [],
+      webFont: 'TeX',
+      undefinedFamily: "serif",
+      mtextFontInherit: true,
+    },
+    TeX: {
+  "Macros": {},
+  "equationNumbers": {},
+  "extensions": [
+    "AMSmath.js",
+    "AMSsymbols.js",
+    "noErrors.js",
+    "noUndefined.js"
+  ]
+},
+    showMathMenu: true
+  });
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js"></script>
+    <style>.emoji {
+  max-width: 1em !important;
+}
+del {
+  text-decoration: none;
+  position: relative;
+}
+del::after {
+  border-bottom: 1px solid black;
+  content: '';
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 50%;
+}
+ul.contains-task-list li.task-list-item {
+  position: relative;
+  list-style-type: none;
+}
+ul.contains-task-list li.task-list-item input.task-list-item-checkbox {
+  position: absolute;
+  transform: translateX(-100%);
+  width: 26px;
+}
+span.critic.comment {
+  position: relative;
+}
+span.critic.comment::before {
+  content: '\1f4ac';
+  position: initial;
+}
+span.critic.comment > span {
+  display: none;
+}
+span.critic.comment:hover > span {
+  display: initial;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  border: 1px solid;
+  border-radius: 5px;
+  max-height: 4em;
+  overflow: auto;
+}
+span.critic.comment:focus > span {
+  display: initial;
+  text-decoration: underline;
+  position: initial;
+  top: auto;
+  left: auto;
+  border: initial;
+  border-radius: initial;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: transparent;
+}
+
+body {
+  padding: 2em;
+  font-size: 1.2em;
+  color: #abb2bf;
+  background-color: #282c34;
+  overflow: auto;
+}
+body > :first-child,
+body > div.update-preview > :first-child {
+  margin-top: 0;
+}
+body > p,
+body > div.update-preview > p {
+  margin-top: 0;
+  margin-bottom: 1.5em;
+}
+body > ul,
+body > div.update-preview > ul,
+body > ol,
+body > div.update-preview > ol {
+  margin-bottom: 1.5em;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  color: #ffffff;
+}
+h1 {
+  font-size: 2.4em;
+  font-weight: 300;
+}
+h2 {
+  font-size: 1.8em;
+  font-weight: 400;
+}
+h3 {
+  font-size: 1.5em;
+  font-weight: 500;
+}
+h4 {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+h5 {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+h6 {
+  font-size: 1em;
+  font-weight: 600;
+}
+strong {
+  color: #ffffff;
+}
+del {
+  color: #7c879c;
+}
+a,
+a code {
+  color: #528bff;
+}
+img {
+  max-width: 100%;
+}
+blockquote {
+  margin: 1.5em 0;
+  font-size: inherit;
+  color: #7c879c;
+  border-color: #4b5362;
+  border-width: 4px;
+}
+hr {
+  margin: 3em 0;
+  border-top: 2px dashed #4b5362;
+  background: none;
+}
+table {
+  margin: 1.5em 0;
+}
+th {
+  color: #ffffff;
+}
+th,
+td {
+  padding: 0.66em 1em;
+  border: 1px solid #4b5362;
+}
+code {
+  color: #ffffff;
+  background-color: #3a3f4b;
+}
+pre.editor-colors {
+  margin: 1.5em 0;
+  padding: 1em;
+  font-size: 0.92em;
+  border-radius: 3px;
+  background-color: #31363f;
+}
+kbd {
+  color: #ffffff;
+  border: 1px solid #4b5362;
+  border-bottom: 2px solid #3e4451;
+  background-color: #3a3f4b;
+}
+
+.bracket-matcher .region {
+  border-bottom: 1px dotted lime;
+  position: absolute;
+}
+.line-number.bracket-matcher.bracket-matcher {
+  color: #abb2bf;
+  background-color: #3a3f4b;
+}
+
+.spell-check-misspelling .region {
+  border-bottom: 2px dotted rgba(255, 51, 51, 0.75);
+}
+.spell-check-corrections {
+  width: 25em !important;
+}
+
+pre.editor-colors {
+  background-color: #282c34;
+  color: #abb2bf;
+}
+pre.editor-colors .line.cursor-line {
+  background-color: rgba(153, 187, 255, 0.04);
+}
+pre.editor-colors .invisible {
+  color: #abb2bf;
+}
+pre.editor-colors .cursor {
+  border-left: 2px solid #528bff;
+}
+pre.editor-colors .selection .region {
+  background-color: #3e4451;
+}
+pre.editor-colors .bracket-matcher .region {
+  border-bottom: 1px solid #528bff;
+  box-sizing: border-box;
+}
+pre.editor-colors .invisible-character {
+  color: rgba(171, 178, 191, 0.15);
+}
+pre.editor-colors .indent-guide {
+  color: rgba(171, 178, 191, 0.15);
+}
+pre.editor-colors .wrap-guide {
+  background-color: rgba(171, 178, 191, 0.15);
+}
+pre.editor-colors .find-result .region.region.region,
+pre.editor-colors .current-result .region.region.region {
+  border-radius: 2px;
+  background-color: rgba(82, 139, 255, 0.24);
+  transition: border-color 0.4s;
+}
+pre.editor-colors .find-result .region.region.region {
+  border: 2px solid transparent;
+}
+pre.editor-colors .current-result .region.region.region {
+  border: 2px solid #528bff;
+  transition-duration: .1s;
+}
+pre.editor-colors .gutter .line-number {
+  color: #636d83;
+  -webkit-font-smoothing: antialiased;
+}
+pre.editor-colors .gutter .line-number.cursor-line {
+  color: #abb2bf;
+  background-color: #3a3f4b;
+}
+pre.editor-colors .gutter .line-number.cursor-line-no-selection {
+  background-color: transparent;
+}
+pre.editor-colors .gutter .line-number .icon-right {
+  color: #abb2bf;
+}
+pre.editor-colors .gutter:not(.git-diff-icon) .line-number.git-line-removed.git-line-removed::before {
+  bottom: -3px;
+}
+pre.editor-colors .gutter:not(.git-diff-icon) .line-number.git-line-removed::after {
+  content: "";
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 25px;
+  border-bottom: 1px dotted rgba(224, 82, 82, 0.5);
+  pointer-events: none;
+}
+pre.editor-colors .gutter .line-number.folded,
+pre.editor-colors .gutter .line-number:after,
+pre.editor-colors .fold-marker:after {
+  color: #abb2bf;
+}
+.syntax--comment {
+  color: #5c6370;
+  font-style: italic;
+}
+.syntax--comment .syntax--markup.syntax--link {
+  color: #5c6370;
+}
+.syntax--entity.syntax--name.syntax--type {
+  color: #e5c07b;
+}
+.syntax--entity.syntax--other.syntax--inherited-class {
+  color: #e5c07b;
+}
+.syntax--keyword {
+  color: #c678dd;
+}
+.syntax--keyword.syntax--control {
+  color: #c678dd;
+}
+.syntax--keyword.syntax--operator {
+  color: #c678dd;
+}
+.syntax--keyword.syntax--other.syntax--special-method {
+  color: #61afef;
+}
+.syntax--keyword.syntax--other.syntax--unit {
+  color: #d19a66;
+}
+.syntax--storage {
+  color: #c678dd;
+}
+.syntax--storage.syntax--type.syntax--annotation,
+.syntax--storage.syntax--type.syntax--primitive {
+  color: #c678dd;
+}
+.syntax--storage.syntax--modifier.syntax--package,
+.syntax--storage.syntax--modifier.syntax--import {
+  color: #abb2bf;
+}
+.syntax--constant {
+  color: #d19a66;
+}
+.syntax--constant.syntax--variable {
+  color: #d19a66;
+}
+.syntax--constant.syntax--character.syntax--escape {
+  color: #56b6c2;
+}
+.syntax--constant.syntax--numeric {
+  color: #d19a66;
+}
+.syntax--constant.syntax--other.syntax--color {
+  color: #56b6c2;
+}
+.syntax--constant.syntax--other.syntax--symbol {
+  color: #56b6c2;
+}
+.syntax--variable {
+  color: #e06c75;
+}
+.syntax--variable.syntax--interpolation {
+  color: #be5046;
+}
+.syntax--variable.syntax--parameter {
+  color: #abb2bf;
+}
+.syntax--string {
+  color: #98c379;
+}
+.syntax--string > .syntax--source,
+.syntax--string .syntax--embedded {
+  color: #abb2bf;
+}
+.syntax--string.syntax--regexp {
+  color: #56b6c2;
+}
+.syntax--string.syntax--regexp .syntax--source.syntax--ruby.syntax--embedded {
+  color: #e5c07b;
+}
+.syntax--string.syntax--other.syntax--link {
+  color: #e06c75;
+}
+.syntax--punctuation.syntax--definition.syntax--comment {
+  color: #5c6370;
+}
+.syntax--punctuation.syntax--definition.syntax--method-parameters,
+.syntax--punctuation.syntax--definition.syntax--function-parameters,
+.syntax--punctuation.syntax--definition.syntax--parameters,
+.syntax--punctuation.syntax--definition.syntax--separator,
+.syntax--punctuation.syntax--definition.syntax--seperator,
+.syntax--punctuation.syntax--definition.syntax--array {
+  color: #abb2bf;
+}
+.syntax--punctuation.syntax--definition.syntax--heading,
+.syntax--punctuation.syntax--definition.syntax--identity {
+  color: #61afef;
+}
+.syntax--punctuation.syntax--definition.syntax--bold {
+  color: #e5c07b;
+  font-weight: bold;
+}
+.syntax--punctuation.syntax--definition.syntax--italic {
+  color: #c678dd;
+  font-style: italic;
+}
+.syntax--punctuation.syntax--section.syntax--embedded {
+  color: #be5046;
+}
+.syntax--punctuation.syntax--section.syntax--method,
+.syntax--punctuation.syntax--section.syntax--class,
+.syntax--punctuation.syntax--section.syntax--inner-class {
+  color: #abb2bf;
+}
+.syntax--support.syntax--class {
+  color: #e5c07b;
+}
+.syntax--support.syntax--type {
+  color: #56b6c2;
+}
+.syntax--support.syntax--function {
+  color: #56b6c2;
+}
+.syntax--support.syntax--function.syntax--any-method {
+  color: #61afef;
+}
+.syntax--entity.syntax--name.syntax--function {
+  color: #61afef;
+}
+.syntax--entity.syntax--name.syntax--class,
+.syntax--entity.syntax--name.syntax--type.syntax--class {
+  color: #e5c07b;
+}
+.syntax--entity.syntax--name.syntax--section {
+  color: #61afef;
+}
+.syntax--entity.syntax--name.syntax--tag {
+  color: #e06c75;
+}
+.syntax--entity.syntax--other.syntax--attribute-name {
+  color: #d19a66;
+}
+.syntax--entity.syntax--other.syntax--attribute-name.syntax--id {
+  color: #61afef;
+}
+.syntax--meta.syntax--class {
+  color: #e5c07b;
+}
+.syntax--meta.syntax--class.syntax--body {
+  color: #abb2bf;
+}
+.syntax--meta.syntax--method-call,
+.syntax--meta.syntax--method {
+  color: #abb2bf;
+}
+.syntax--meta.syntax--definition.syntax--variable {
+  color: #e06c75;
+}
+.syntax--meta.syntax--link {
+  color: #d19a66;
+}
+.syntax--meta.syntax--require {
+  color: #61afef;
+}
+.syntax--meta.syntax--selector {
+  color: #c678dd;
+}
+.syntax--meta.syntax--separator {
+  color: #abb2bf;
+}
+.syntax--meta.syntax--tag {
+  color: #abb2bf;
+}
+.syntax--underline {
+  text-decoration: underline;
+}
+.syntax--none {
+  color: #abb2bf;
+}
+.syntax--invalid.syntax--deprecated {
+  color: #523d14 !important;
+  background-color: #e0c285 !important;
+}
+.syntax--invalid.syntax--illegal {
+  color: white !important;
+  background-color: #e05252 !important;
+}
+.syntax--markup.syntax--bold {
+  color: #d19a66;
+  font-weight: bold;
+}
+.syntax--markup.syntax--changed {
+  color: #c678dd;
+}
+.syntax--markup.syntax--deleted {
+  color: #e06c75;
+}
+.syntax--markup.syntax--italic {
+  color: #c678dd;
+  font-style: italic;
+}
+.syntax--markup.syntax--heading {
+  color: #e06c75;
+}
+.syntax--markup.syntax--heading .syntax--punctuation.syntax--definition.syntax--heading {
+  color: #61afef;
+}
+.syntax--markup.syntax--link {
+  color: #56b6c2;
+}
+.syntax--markup.syntax--inserted {
+  color: #98c379;
+}
+.syntax--markup.syntax--quote {
+  color: #d19a66;
+}
+.syntax--markup.syntax--raw {
+  color: #98c379;
+}
+.syntax--source.syntax--c .syntax--keyword.syntax--operator {
+  color: #c678dd;
+}
+.syntax--source.syntax--cpp .syntax--keyword.syntax--operator {
+  color: #c678dd;
+}
+.syntax--source.syntax--cs .syntax--keyword.syntax--operator {
+  color: #c678dd;
+}
+.syntax--source.syntax--css .syntax--property-name,
+.syntax--source.syntax--css .syntax--property-value {
+  color: #828997;
+}
+.syntax--source.syntax--css .syntax--property-name.syntax--support,
+.syntax--source.syntax--css .syntax--property-value.syntax--support {
+  color: #abb2bf;
+}
+.syntax--source.syntax--elixir .syntax--source.syntax--embedded.syntax--source {
+  color: #abb2bf;
+}
+.syntax--source.syntax--elixir .syntax--constant.syntax--language,
+.syntax--source.syntax--elixir .syntax--constant.syntax--numeric,
+.syntax--source.syntax--elixir .syntax--constant.syntax--definition {
+  color: #61afef;
+}
+.syntax--source.syntax--elixir .syntax--variable.syntax--definition,
+.syntax--source.syntax--elixir .syntax--variable.syntax--anonymous {
+  color: #c678dd;
+}
+.syntax--source.syntax--elixir .syntax--parameter.syntax--variable.syntax--function {
+  color: #d19a66;
+  font-style: italic;
+}
+.syntax--source.syntax--elixir .syntax--quoted {
+  color: #98c379;
+}
+.syntax--source.syntax--elixir .syntax--keyword.syntax--special-method,
+.syntax--source.syntax--elixir .syntax--embedded.syntax--section,
+.syntax--source.syntax--elixir .syntax--embedded.syntax--source.syntax--empty {
+  color: #e06c75;
+}
+.syntax--source.syntax--elixir .syntax--readwrite.syntax--module .syntax--punctuation {
+  color: #e06c75;
+}
+.syntax--source.syntax--elixir .syntax--regexp.syntax--section,
+.syntax--source.syntax--elixir .syntax--regexp.syntax--string {
+  color: #be5046;
+}
+.syntax--source.syntax--elixir .syntax--separator,
+.syntax--source.syntax--elixir .syntax--keyword.syntax--operator {
+  color: #d19a66;
+}
+.syntax--source.syntax--elixir .syntax--variable.syntax--constant {
+  color: #e5c07b;
+}
+.syntax--source.syntax--elixir .syntax--array,
+.syntax--source.syntax--elixir .syntax--scope,
+.syntax--source.syntax--elixir .syntax--section {
+  color: #828997;
+}
+.syntax--source.syntax--gfm .syntax--markup {
+  -webkit-font-smoothing: auto;
+}
+.syntax--source.syntax--gfm .syntax--link .syntax--entity {
+  color: #61afef;
+}
+.syntax--source.syntax--go .syntax--storage.syntax--type.syntax--string {
+  color: #c678dd;
+}
+.syntax--source.syntax--ini .syntax--keyword.syntax--other.syntax--definition.syntax--ini {
+  color: #e06c75;
+}
+.syntax--source.syntax--java .syntax--storage.syntax--modifier.syntax--import {
+  color: #e5c07b;
+}
+.syntax--source.syntax--java .syntax--storage.syntax--type {
+  color: #e5c07b;
+}
+.syntax--source.syntax--java .syntax--keyword.syntax--operator.syntax--instanceof {
+  color: #c678dd;
+}
+.syntax--source.syntax--java-properties .syntax--meta.syntax--key-pair {
+  color: #e06c75;
+}
+.syntax--source.syntax--java-properties .syntax--meta.syntax--key-pair > .syntax--punctuation {
+  color: #abb2bf;
+}
+.syntax--source.syntax--js .syntax--keyword.syntax--operator {
+  color: #56b6c2;
+}
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--delete,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--in,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--of,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--instanceof,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--new,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--typeof,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--void {
+  color: #c678dd;
+}
+.syntax--source.syntax--ts .syntax--keyword.syntax--operator {
+  color: #56b6c2;
+}
+.syntax--source.syntax--flow .syntax--keyword.syntax--operator {
+  color: #56b6c2;
+}
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--string.syntax--quoted.syntax--json {
+  color: #e06c75;
+}
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--string.syntax--quoted.syntax--json > .syntax--punctuation.syntax--string {
+  color: #e06c75;
+}
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--value.syntax--json > .syntax--string.syntax--quoted.syntax--json,
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--array.syntax--json > .syntax--value.syntax--json > .syntax--string.syntax--quoted.syntax--json,
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--value.syntax--json > .syntax--string.syntax--quoted.syntax--json > .syntax--punctuation,
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--array.syntax--json > .syntax--value.syntax--json > .syntax--string.syntax--quoted.syntax--json > .syntax--punctuation {
+  color: #98c379;
+}
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--constant.syntax--language.syntax--json,
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--array.syntax--json > .syntax--constant.syntax--language.syntax--json {
+  color: #56b6c2;
+}
+.syntax--ng.syntax--interpolation {
+  color: #e06c75;
+}
+.syntax--ng.syntax--interpolation.syntax--begin,
+.syntax--ng.syntax--interpolation.syntax--end {
+  color: #61afef;
+}
+.syntax--ng.syntax--interpolation .syntax--function {
+  color: #e06c75;
+}
+.syntax--ng.syntax--interpolation .syntax--function.syntax--begin,
+.syntax--ng.syntax--interpolation .syntax--function.syntax--end {
+  color: #61afef;
+}
+.syntax--ng.syntax--interpolation .syntax--bool {
+  color: #d19a66;
+}
+.syntax--ng.syntax--interpolation .syntax--bracket {
+  color: #abb2bf;
+}
+.syntax--ng.syntax--pipe,
+.syntax--ng.syntax--operator {
+  color: #abb2bf;
+}
+.syntax--ng.syntax--tag {
+  color: #56b6c2;
+}
+.syntax--ng.syntax--attribute-with-value .syntax--attribute-name {
+  color: #e5c07b;
+}
+.syntax--ng.syntax--attribute-with-value .syntax--string {
+  color: #c678dd;
+}
+.syntax--ng.syntax--attribute-with-value .syntax--string.syntax--begin,
+.syntax--ng.syntax--attribute-with-value .syntax--string.syntax--end {
+  color: #abb2bf;
+}
+.syntax--source.syntax--ruby .syntax--constant.syntax--other.syntax--symbol > .syntax--punctuation {
+  color: inherit;
+}
+.syntax--source.syntax--php .syntax--class.syntax--bracket {
+  color: #abb2bf;
+}
+.syntax--source.syntax--python .syntax--keyword.syntax--operator.syntax--logical.syntax--python {
+  color: #c678dd;
+}
+.syntax--source.syntax--python .syntax--variable.syntax--parameter {
+  color: #d19a66;
+}
+
+/*
+ * Your Stylesheet
+ *
+ * This stylesheet is loaded when Atom starts up and is reloaded automatically
+ * when it is changed and saved.
+ *
+ * Add your own CSS or Less to fully customize Atom.
+ * If you are unfamiliar with Less, you can read more about it here:
+ * http://lesscss.org
+ */
+/*
+ * Examples
+ * (To see them, uncomment and save)
+ */
+</style>
+
+  </head>
+  <body>
+    <hr>
+<h3 id="chapter-1%3A%E5%85%B3%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%86%A5%E6%83%B3">Chapter 1:关于机器学习的冥想</h3>
+<h4 id="machine-learning-mindset">Machine Learning Mindset</h4>
+<p>[Step]</p>
+<ol>
+<li>Set the research goal.	(I want to predict how heavy traffic will be on a given day.</li>
+<li>Make a hypothesis.	(I think the weather forecast is an informative signal.</li>
+<li>Collect the data.	(Collect historical traffic data and weather on each day.</li>
+<li>Test your hypothesis.	(Train a model using this data.</li>
+<li>Analyze your results.	(Is this model better than existing systems?</li>
+<li>Reach a conclusion.	(I should (not) use this model to make predictions, because of X, Y, and Z.</li>
+<li>Refine hypothesis and repeat.	(Time of year could be a helpful signal.</li>
+</ol>
+<h4 id="golden-sentences">Golden Sentences</h4>
+<ul>
+<li>
+<p>“Garbage in, garbage out”</p>
+</li>
+<li>
+<p>Keep in mind Goodhart’s law , “When a measure becomes a target, it ceases to be a good measure.”</p>
+</li>
+<li>
+<p>Start with the problem, not the solution. Make sure you aren’t treating ML as a hammer for your problems.</p>
+</li>
+<li>
+<p>As a rough rule of thumb, your model should train on at least an order of magnitude more examples than trainable parameters. Simple models on large data sets generally beat fancy models on small data sets.</p>
+</li>
+</ul>
+<hr>
+<h3 id="chapter-2%3A%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87-data-preparation">Chapter 2:数据准备 Data Preparation</h3>
+<p>如何处理数据集？</p>
+<h4 id="%E5%A4%B1%E8%A1%A1%E6%95%B0%E6%8D%AE-imbalanced-data">失衡数据 Imbalanced data</h4>
+<ul>
+<li>
+<p>Imbalanced Data中有Majority Class与Minority Class。而Minority Class所占比重极小。</p>
+<table>
+<thead>
+<tr>
+<th>Minority Class Percentage</th>
+<th>Degree of imbalance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mild</td>
+<td>20-40% of the data set</td>
+</tr>
+<tr>
+<td>Moderate</td>
+<td>1-20% of the data set</td>
+</tr>
+<tr>
+<td>Extreme</td>
+<td>&lt;1% of the data set</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>解决办法：</p>
+<ul>
+<li>首先直接在Imbalanced数据集中训练。</li>
+<li>如果效果不好，使用下采样(DownSampling)与上权重(Upweighting)</li>
+<li>DownSampling:例如，数据集中有200个反例，10个正例。首先将反例以因子20进行下采样:拿出10%的数据</li>
+<li>Upweighting:由于对数据进行了下采样，需要对其样本权重进行补偿——由于取出了10%的数据，因此取出的数据的样本权重为10倍的原始权重。即：当计算loss时，模型看待这些样本的比重为10倍的原始数据。</li>
+</ul>
+</li>
+</ul>
+<h4 id="%E6%95%B0%E6%8D%AE%E9%9B%86%E5%8F%AF%E9%9D%A0%E6%80%A7-reliability-of-dataset">数据集可靠性 Reliability of dataset</h4>
+<p>Below is a list of possible causes of unreliable dataset.</p>
+<ul>
+<li>Omitted values. For instance, a person forgot to enter a value for a house’s age.</li>
+<li>Duplicate examples. For example, a server mistakenly uploaded the same logs twice.</li>
+<li>Bad labels. For instance, a person mislabeled a picture of an oak tree as a maple.</li>
+<li>Bad feature values. For example, someone typed an extra digit, or a thermometer was left out in the sun.</li>
+</ul>
+<h4 id="data-transformation-%E6%95%B0%E6%8D%AE%E5%8F%98%E5%BD%A2%EF%BC%88%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%89">Data Transformation 数据变形（归一化）</h4>
+<ul>
+<li>
+<h5 id="scaling-to-a-range(%E7%BC%A9%E6%94%BE%E8%87%B3%E8%8C%83%E5%9B%B4%E5%86%85)-%3A">Scaling to a range(缩放至范围内) :</h5>
+<span class="math display-math"><script type="math/tex; mode=display">x'=\frac{x-x_{min}}{x_{max}-x_{min}}
+</script></span>
+<ul>
+<li>注意，使用这种缩放满足以下两个先验条件时效果较好：<br>
+(1) 数据分布的上界、下界大概值可以确认，且没有outliers<br>
+(2) 数据在此范围内大体满足均匀分布</li>
+</ul>
+</li>
+<li>
+<h5 id="%E7%89%B9%E5%BE%81%E8%A3%81%E5%89%AA-feature-clipping">特征裁剪 Feature Clipping</h5>
+<ul>
+<li>在应用其他Normalization之前使用特征裁剪。<br>
+当存在outlier时：<br>
+(1)设置最大最小值区间Min-Max,把此区间外的值剔除。<br>
+(2)Z-score(Z分数)裁剪法：将数据的Z分数限制在±Nσ区间内。其中N通常取3.<br>
+(3)log缩放：<span class="math inline-math"><script type="math/tex">x'=log(x)</script></span> ，当数据近似满足指数分布，且数据分布较稀疏时可以使用。</li>
+<li>补充：Z score保证了数据为均值为0，方差为1的分布。当数据中存在少量outlier,但又不是严重到必须使用特征裁剪时，可以只使用Z score归一化数据。</li>
+</ul>
+<span class="math display-math"><script type="math/tex; mode=display">x'=\frac{x-μ}{σ}
+</script></span>
+</li>
+<li>
+<h4 id="bucketing-%E8%A3%85%E6%A1%B6">Bucketing 装桶</h4>
+<ul>
+<li>当输入特征为浮点数，而输出与该特征非线性关系时，可将其装桶（打包）。例如：把经度平均划分为1度一个区间。<br>
+The boundaries are fixed and encompass the same range (for example, 0-4 degrees, 5-9 degrees…)</li>
+<li>分位数打包(Quantile bucketing)：当数据集中分布在某一区间，而在另一区间内数据较少时，可采用分位数打包。<br>
+Each bucket has the same number of points. The boundaries are not fixed and could encompass a narrow or wide span of values.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="chapter-3%3A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9recap">Chapter 3:机器学习知识点Recap</h3>
+<h4 id="%E5%9F%BA%E4%BA%8E%E6%A0%91%E7%9A%84%E6%96%B9%E6%B3%95-tree-based-methods">基于树的方法 Tree-based Methods</h4>
+<p>树的方法在很多Data Competition中很有用如Decision Tree,Random Forest,GBDT等。下面一一介绍。</p>
+<h5 id="%E5%86%B3%E7%AD%96%E6%A0%91decision-tree">决策树Decision tree</h5>
+<p>决策树基于简单的分而治之(Divide-and-conquer)策略。一个决策树通常包含一个根结点、若干的内部结点和若干个叶结点。叶结点对应于决策结果，其他节点对应于属性测试。<br>
+注意划分决策树的最优划分属性时有多种算法，如信息熵(ID3决策树)、增益率(C4.5决策树)、基尼系数（CART决策树）等。</p>
+<ul>
+<li>剪枝处理（pruning）:决策树对付过拟合的主要手段-通过主动去掉一些分支来降低过拟合的风险。
+<ul>
+<li>预剪枝（pre-pruning）：首先将数据集划分为训练集、验证集，在划分每个结点时先计算不划分结点时的准确率，然后计算划分结点后的准确率；若后者大于前者，则确认在此处划分结点。<br>
+<em>注意：可能带来欠拟合风险</em></li>
+<li>后剪枝(post-pruning)：先生成一颗完整的决策树，然后自下至上，对每个结点的子树分析——若将子树替换为叶节点，判断其准确率有无提高；若提高或相同（奥卡姆剃刀准则），则进行剪枝。<br>
+<em>注意：后剪枝的决策树通常比预剪枝的决策树有更多的分支，因此欠拟合的风险较小，泛化性能通常较优；但训练时间较长。</em></li>
+</ul>
+</li>
+</ul>
+<h5 id="%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97-random-forest">随机森林 Random forest</h5>
+<p>随机森林相当于一组决策树；根据”少数服从多数”的原则进行预测。<br>
+“随机”的含义可从两个层面解释：假设给定数据集X,以每一行为一个样本，每一列为一个特征。</p>
+<ul>
+<li>从行的角度：每个决策树只根据训练集中随机选取的一小部分（比如10%）的数据进行训练，因此每个决策树预测结果将会不同。</li>
+<li>从列的角度：投喂给每个决策树用于训练的特征也仅为所有特征中随机选取的某一部分（比如10%）。</li>
+</ul>
+<p>注意在以下几种情况下，随机森林不是一个好的算法：</p>
+<ul>
+<li>当训练集很小时，随机森林表现很差。（甚至还不如线性算法）</li>
+<li>随机森林的可解释性很差。随机森林是一个预测工具，而不是一个描述工具。</li>
+<li>用来训练多个决策树的时间有时会很长很长。对于一个n类的类别变量，随机森林要分裂<span class="math inline-math"><script type="math/tex">2^n-1</script></span>个节点。</li>
+<li>对于回归问题，随机森林能给出的预测值只能为训练集中的数据已经出现了的范围内。它不能像线性回归一样给出不在训练集中的值的范围。</li>
+</ul>
+<h5 id="%E9%9B%86%E6%88%90%E6%96%B9%E6%B3%95(ensembling)">集成方法(Ensembling)</h5>
+<p>集成学习先产生一组个体学习器，再用某种策略将其结合起来。个体学习器可以是同质也可以是异质的。通过将多个学习器进行结合，通常可以获得比单一学习器显著优越的泛化性能。<em>此效应对弱学习器更为明显（弱学习器指泛化性能略优于随机猜测的学习器）</em><br>
+要使集成学习获得更好的性能，需要保证个体学习器应有一定的准确性，且学习器之间要有一定<em>差异</em>——好而不同。但实际上准确性与差异之间是一对矛盾，因为学习器是为解决同一问题而训练出来的。</p>
+<p>根据个体学习器的生成方式，集成方法大致可分为两类</p>
+<ul>
+<li>个体学习器之间存在强依赖关系，必须串行生成的序列化方法——Boosting</li>
+<li>个体学习器之间不存在强依赖关系，可以并行生成——Bagging与随机森林</li>
+</ul>
+<h6 id="boosting">Boosting</h6>
+<p>Boosting是一族可将弱学习器提升为强学习器的算法。其工作原理大体为：先从初始训练集训练出基学习器，再根据基学习器的表现对训练样本分布进行调整，使得先前基学习器表现不好的样本得到更多关注，基于调整后的样本分布来训练下一个基学习器。反复进行直到基学习器数目达到指定值T。最终将这T个基学习器进行加权结合。<br>
+典型代表：AdaBoost算法 （西瓜书p173）<br>
+注：Boosting方法主要关注于降低偏差，因此Boosting能基于泛化性能相当弱的学习器构建出很强的集成。</p>
+<h6 id="bagging%EF%BC%88bootsrap-aggregating%E7%9A%84%E7%BC%A9%E5%86%99%EF%BC%89">Bagging（Bootsrap aggregating的缩写）</h6>
+<p>为了使个体学习器的差异尽量大，一种做法是将训练样本进行采样，产生若干的不同的子集用于训练基学习器；然而这样会降低实际用的训练样本数目，导致准确率降低。因此实际上可以考虑相互有交叠的采样子集。<br>
+Bagging基于自助采样法：给定m个样本的数据集，先随即取出一个样本放入采样集中，再把该样本放回初始数据集，使得下次采样时仍可能选中该样本。这样，我们可得到T个含m个样本的采样集，然后基于每个采样集训练出一个基学习器，再将这些基学习器进行结合——对分类任务，使用简单投票法；对回归任务，使用简单平均法。<br>
+由于使用了自助采样法，初始训练集中约有63.2%的样本被使用于训练，还剩下36.8%的数据可用于<em>包外估计(out-of-bag estimate)</em><br>
+注：Bagging主要关注于降低方差，因此它在不剪枝的决策树、神经网络等容易受样本扰动干扰的学习器上效用更明显。</p>
+<h5 id="%E7%BB%93%E5%90%88%E7%AD%96%E7%95%A5">结合策略</h5>
+<p>下面是几种对多个学习器$h_{i}(x)$进行结合的常见策略：（西瓜书p181）</p>
+<ul>
+<li>平均法：适用于数值型输出
+<ul>
+<li>简单平均法</li>
+<li>加权平均法：学习出的权重不完全可靠，且可能出现过拟合。因此实际效果未必优于简单平均法。</li>
+</ul>
+</li>
+<li>投票法：适用于分类问题
+<ul>
+<li>绝对多数投票法</li>
+<li>相对多数投票法</li>
+<li>加权投票法</li>
+</ul>
+</li>
+<li>学习法：通过另一个学习器来进行结合。将个体学习器称为初级学习器，用于结合的学习器为次级学习器或元学习器(meta-learner)。典型代表：Stacking</li>
+</ul>
+<hr>
+<h3 id="chapter-4%3Atensorflow-keras%E7%9F%A5%E8%AF%86%E7%82%B9">Chapter 4:Tensorflow Keras知识点</h3>
+<ul>
+<li>
+<p>使用Callback终止模型训练：</p>
+<ul>
+<li>定义Callback</li>
+</ul>
+<pre class="editor-colors lang-python"><span><span class="syntax--source syntax--python"><span class="syntax--storage syntax--type syntax--class">class</span> <span class="syntax--entity syntax--name syntax--type syntax--class">myCallback</span>(<span class="syntax--entity syntax--other syntax--inherited-class">tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">callbacks</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">Callback</span></span>):</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span><span class="syntax--storage syntax--type syntax--function">def</span> <span class="syntax--entity syntax--name syntax--function">on_epoch_end</span>(<span class="syntax--variable syntax--parameter syntax--function">self</span>,<span class="syntax--variable syntax--parameter syntax--function">epoch</span>,<span class="syntax--variable syntax--parameter syntax--function">log</span><span class="syntax--keyword syntax--operator">=</span>{}):</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">      </span><span class="syntax--keyword syntax--control">if</span>(log[<span class="syntax--string syntax--quoted">'acc'</span>]<span class="syntax--keyword syntax--operator">&gt;</span>DESIRED_ACCURACY):</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">          </span><span class="syntax--support syntax--function">print</span>(<span class="syntax--string syntax--quoted">'Training terminated.'</span>)</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">          </span>self.<span class="syntax--variable syntax--other syntax--object syntax--property">model</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">stop_training</span> <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--constant syntax--language">True</span><span class="trailing-whitespace">      </span></span></span>
+<span><span class="syntax--source syntax--python">callbacks <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--entity syntax--name syntax--function">myCallback</span>()</span></span></pre>
+<ul>
+<li>在model.fit中使用callback</li>
+</ul>
+<pre class="editor-colors lang-python"><span><span class="syntax--source syntax--python"><span class="syntax--comment syntax--line"># 使用fit_generator举例.</span></span></span>
+<span><span class="syntax--source syntax--python">history <span class="syntax--keyword syntax--operator">=</span> model.<span class="syntax--entity syntax--name syntax--function">fit_generator</span>(</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>train_generator,</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span><span class="syntax--variable syntax--parameter syntax--function">steps_per_epoch</span> <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--constant syntax--numeric">5</span>,</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span><span class="syntax--variable syntax--parameter syntax--function">epochs</span> <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--constant syntax--numeric">20</span>,</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span><span class="syntax--variable syntax--parameter syntax--function">verbose</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--constant syntax--numeric">1</span>,</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span><span class="syntax--variable syntax--parameter syntax--function">callbacks</span><span class="syntax--keyword syntax--operator">=</span>[callbacks])</span></span></pre>
+</li>
+<li>
+<p>使用卷积层与MaxPooling</p>
+<pre class="editor-colors lang-text"><span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text">```python</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="leading-whitespace">  </span><span class="syntax--meta syntax--paragraph syntax--text">tf.keras.models.Sequential([</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span class="leading-whitespace">  </span>tf.keras.layers.Conv2D(16,(3,3),activation='relu',input_shape=(150,150,3)),</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span class="leading-whitespace">  </span>tf.keras.layers.MaxPooling2D(2,2),</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span class="leading-whitespace">  </span>tf.keras.layers.Conv2D(32,(3,3),activation='relu'),</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span class="leading-whitespace">  </span>tf.keras.layers.MaxPooling2D(2,2),</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span class="leading-whitespace">  </span>tf.keras.layers.Conv2D(64,(3,3),activation='relu'),</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span class="leading-whitespace">  </span>tf.keras.layers.MaxPooling2D(2,2),</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span class="leading-whitespace">  </span>tf.keras.layers.Flatten(),</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span class="leading-whitespace">  </span>tf.keras.layers.Dense(512,activation='relu'),</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span class="leading-whitespace">  </span>tf.keras.layers.Dense(1,activation='sigmoid')])</span></span></span>
+<span><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text">```</span></span></span></pre>
+</li>
+<li>
+<p>使用卷积层与MaxPooling</p>
+<pre class="editor-colors lang-python"><span><span class="leading-whitespace">  </span><span class="syntax--source syntax--python">model <span class="syntax--keyword syntax--operator">=</span> tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">models</span>.<span class="syntax--entity syntax--name syntax--function">Sequential</span>([</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>.<span class="syntax--entity syntax--name syntax--function">Conv2D</span>(<span class="syntax--constant syntax--numeric">16</span>,(<span class="syntax--constant syntax--numeric">3</span>,<span class="syntax--constant syntax--numeric">3</span>),<span class="syntax--variable syntax--parameter syntax--function">activation</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--string syntax--quoted">'relu'</span>,<span class="syntax--variable syntax--parameter syntax--function">input_shape</span><span class="syntax--keyword syntax--operator">=</span>(<span class="syntax--constant syntax--numeric">150</span>,<span class="syntax--constant syntax--numeric">150</span>,<span class="syntax--constant syntax--numeric">3</span>)),</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>.<span class="syntax--entity syntax--name syntax--function">MaxPooling2D</span>(<span class="syntax--constant syntax--numeric">2</span>,<span class="syntax--constant syntax--numeric">2</span>),</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>.<span class="syntax--entity syntax--name syntax--function">Conv2D</span>(<span class="syntax--constant syntax--numeric">32</span>,(<span class="syntax--constant syntax--numeric">3</span>,<span class="syntax--constant syntax--numeric">3</span>),<span class="syntax--variable syntax--parameter syntax--function">activation</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--string syntax--quoted">'relu'</span>),</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>.<span class="syntax--entity syntax--name syntax--function">MaxPooling2D</span>(<span class="syntax--constant syntax--numeric">2</span>,<span class="syntax--constant syntax--numeric">2</span>),</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>.<span class="syntax--entity syntax--name syntax--function">Conv2D</span>(<span class="syntax--constant syntax--numeric">64</span>,(<span class="syntax--constant syntax--numeric">3</span>,<span class="syntax--constant syntax--numeric">3</span>),<span class="syntax--variable syntax--parameter syntax--function">activation</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--string syntax--quoted">'relu'</span>),</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>.<span class="syntax--entity syntax--name syntax--function">MaxPooling2D</span>(<span class="syntax--constant syntax--numeric">2</span>,<span class="syntax--constant syntax--numeric">2</span>),</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>.<span class="syntax--entity syntax--name syntax--function">Flatten</span>(),</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>.<span class="syntax--entity syntax--name syntax--function">Dense</span>(<span class="syntax--constant syntax--numeric">512</span>,<span class="syntax--variable syntax--parameter syntax--function">activation</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--string syntax--quoted">'relu'</span>),</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>tf.<span class="syntax--variable syntax--other syntax--object syntax--property">keras</span>.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>.<span class="syntax--entity syntax--name syntax--function">Dense</span>(<span class="syntax--constant syntax--numeric">1</span>,<span class="syntax--variable syntax--parameter syntax--function">activation</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--string syntax--quoted">'sigmoid'</span>)])</span></span></pre>
+</li>
+<li>
+<p>使用ImageDataGenerator读取image Data</p>
+<pre class="editor-colors lang-python"><span><span class="syntax--source syntax--python"><span class="syntax--keyword syntax--control">from</span> tensorflow.keras.preprocessing.image <span class="syntax--keyword syntax--control">import</span> ImageDataGenerator</span></span>
+<span><span class="syntax--source syntax--python"><span class="syntax--comment syntax--line">#归一化数据</span></span></span>
+<span><span class="syntax--source syntax--python">train_datagen <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--entity syntax--name syntax--function">ImageDataGenerator</span>(<span class="syntax--variable syntax--parameter syntax--function">rescale</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--constant syntax--numeric">1.</span><span class="syntax--keyword syntax--operator">/</span><span class="syntax--constant syntax--numeric">255.</span>)</span></span>
+<span><span class="syntax--source syntax--python"><span class="syntax--comment syntax--line">#直接从文件夹中读取图片数据</span></span></span>
+<span><span class="syntax--source syntax--python">train_generator <span class="syntax--keyword syntax--operator">=</span> train_datagen.<span class="syntax--entity syntax--name syntax--function">flow_from_directory</span>(</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span><span class="syntax--string syntax--quoted">"/tmp/h-or-s"</span>, <span class="syntax--comment syntax--line"># 文件目录</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span><span class="syntax--variable syntax--parameter syntax--function">target_size</span><span class="syntax--keyword syntax--operator">=</span>(<span class="syntax--constant syntax--numeric">150</span>,<span class="syntax--constant syntax--numeric">150</span>),  <span class="syntax--comment syntax--line"># 希望统一化的像素</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span><span class="syntax--variable syntax--parameter syntax--function">batch_size</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--constant syntax--numeric">10</span>,     <span class="syntax--comment syntax--line">#Batch大小</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span><span class="syntax--variable syntax--parameter syntax--function">class_mode</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--string syntax--quoted">'binary'</span>)  <span class="syntax--comment syntax--line">#类型  也可以是catorgorical</span></span></span></pre>
+</li>
+<li>
+<p>使用ImageDataGenerator 进行图像增强（数据增强）</p>
+<pre class="editor-colors lang-python"><span><span class="syntax--source syntax--python">train_datagen <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--entity syntax--name syntax--function">ImageDataGenerator</span>(</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">    </span><span class="syntax--variable syntax--parameter syntax--function">rotation_range</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--constant syntax--numeric">40</span>,  <span class="syntax--comment syntax--line">#40°以内随机倾斜</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">    </span><span class="syntax--variable syntax--parameter syntax--function">width_shift_range</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--constant syntax--numeric">0.2</span>,  <span class="syntax--comment syntax--line">#横座标平移20%</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">    </span><span class="syntax--variable syntax--parameter syntax--function">height_shift_range</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--constant syntax--numeric">0.2</span>,  <span class="syntax--comment syntax--line">#纵坐标平移20%</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">    </span><span class="syntax--variable syntax--parameter syntax--function">shear_range</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--constant syntax--numeric">0.2</span>,    <span class="syntax--comment syntax--line">#倾斜20%</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">    </span><span class="syntax--variable syntax--parameter syntax--function">zoom_range</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--constant syntax--numeric">0.2</span>,     <span class="syntax--comment syntax--line">#放大20%</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">    </span><span class="syntax--variable syntax--parameter syntax--function">horizontal_flip</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--constant syntax--language">True</span>, <span class="syntax--comment syntax--line">#水平翻转</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">    </span><span class="syntax--variable syntax--parameter syntax--function">fill_mode</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--string syntax--quoted">'nearest'</span>)  <span class="syntax--comment syntax--line">#填充空缺像素的模式</span></span></span></pre>
+<ul>
+<li>迁移学习
+<ul>
+<li>加载模型、处理权重</li>
+</ul>
+<pre class="editor-colors lang-python"><span><span class="syntax--source syntax--python"><span class="syntax--comment syntax--line">#加载预训练模型</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="syntax--keyword syntax--control">from</span> tensorflow.keras.applications.inception_v3 <span class="syntax--keyword syntax--control">import</span> InceptionV3</span></span>
+<span><span class="syntax--source syntax--python"><span class="syntax--comment syntax--line">#从本地加载权重，而不要使用自带的权重</span></span></span>
+<span><span class="syntax--source syntax--python">local_weights_file <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--string syntax--quoted">'/tmp/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'</span></span></span>
+<span></span> 
+<span><span class="syntax--source syntax--python">pre_trained_model <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--entity syntax--name syntax--function">InceptionV3</span>(<span class="syntax--variable syntax--parameter syntax--function">input_shape</span> <span class="syntax--keyword syntax--operator">=</span> (<span class="syntax--constant syntax--numeric">150</span>, <span class="syntax--constant syntax--numeric">150</span>, <span class="syntax--constant syntax--numeric">3</span>),</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">                                </span><span class="syntax--variable syntax--parameter syntax--function">include_top</span> <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--constant syntax--language">False</span>,  <span class="syntax--comment syntax--line">#去掉最后的几层</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">                                </span><span class="syntax--variable syntax--parameter syntax--function">weights</span> <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--constant syntax--language">None</span>)   <span class="syntax--comment syntax--line"># 不使用自带的权重</span></span></span>
+<span></span> 
+<span><span class="syntax--source syntax--python">pre_trained_model.<span class="syntax--entity syntax--name syntax--function">load_weights</span>(local_weights_file)  <span class="syntax--comment syntax--line">#加载本地权重</span></span></span>
+<span></span> 
+<span><span class="syntax--source syntax--python"><span class="syntax--keyword syntax--control">for</span> layer <span class="syntax--keyword syntax--operator syntax--logical syntax--python">in</span> pre_trained_model.<span class="syntax--variable syntax--other syntax--object syntax--property">layers</span>:</span></span>
+<span><span class="syntax--source syntax--python"><span class="leading-whitespace">  </span>layer.<span class="syntax--variable syntax--other syntax--object syntax--property">trainable</span> <span class="syntax--keyword syntax--operator">=</span> <span class="syntax--constant syntax--language">False</span>  <span class="syntax--comment syntax--line">#制定某些层，锁定权重</span></span></span></pre>
+<ul>
+<li>取出其中某层作为最后一层：</li>
+</ul>
+<pre class="editor-colors lang-python"><span><span class="syntax--source syntax--python">last_layer <span class="syntax--keyword syntax--operator">=</span> pre_trained_model.<span class="syntax--entity syntax--name syntax--function">get_layer</span>(<span class="syntax--string syntax--quoted">'mixed7'</span>)</span></span>
+<span><span class="syntax--source syntax--python"><span class="syntax--support syntax--function">print</span>(<span class="syntax--string syntax--quoted">'last layer output shape: '</span>, last_layer.<span class="syntax--variable syntax--other syntax--object syntax--property">output_shape</span>)</span></span>
+<span><span class="syntax--source syntax--python">last_output <span class="syntax--keyword syntax--operator">=</span> last_layer.<span class="syntax--variable syntax--other syntax--object syntax--property">output</span></span></span>
+<span><span class="syntax--source syntax--python"><span class="syntax--comment syntax--line"># Flatten the output layer to 1 dimension</span></span></span>
+<span><span class="syntax--source syntax--python">x <span class="syntax--keyword syntax--operator">=</span> layers.<span class="syntax--entity syntax--name syntax--function">Flatten</span>()(last_output)</span></span>
+<span><span class="syntax--source syntax--python"><span class="syntax--comment syntax--line"># Add a fully connected layer with 1,024 hidden units and ReLU activation</span></span></span>
+<span><span class="syntax--source syntax--python">x <span class="syntax--keyword syntax--operator">=</span> layers.<span class="syntax--entity syntax--name syntax--function">Dense</span>(<span class="syntax--constant syntax--numeric">1024</span>, <span class="syntax--variable syntax--parameter syntax--function">activation</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--string syntax--quoted">'relu'</span>)(x)</span></span>
+<span><span class="syntax--source syntax--python"><span class="syntax--comment syntax--line"># Add a dropout rate of 0.2</span></span></span>
+<span><span class="syntax--source syntax--python">x <span class="syntax--keyword syntax--operator">=</span> layers.<span class="syntax--entity syntax--name syntax--function">Dropout</span>(<span class="syntax--constant syntax--numeric">0.2</span>)(x)<span class="trailing-whitespace">                  </span></span></span>
+<span><span class="syntax--source syntax--python"><span class="syntax--comment syntax--line"># Add a final sigmoid layer for classification</span></span></span>
+<span><span class="syntax--source syntax--python">x <span class="syntax--keyword syntax--operator">=</span> layers.<span class="syntax--entity syntax--name syntax--function">Dense</span>  (<span class="syntax--constant syntax--numeric">1</span>, <span class="syntax--variable syntax--parameter syntax--function">activation</span><span class="syntax--keyword syntax--operator">=</span><span class="syntax--string syntax--quoted">'sigmoid'</span>)(x)<span class="trailing-whitespace">    </span></span></span></pre>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+  </body>
+</html>
